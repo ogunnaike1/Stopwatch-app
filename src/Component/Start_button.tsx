@@ -1,8 +1,13 @@
 import React from 'react'
+import PropTypes from "prop-types";
 
-const Start_button = () => {
+
+const Start_button = (props: any) => {
   return (
-    <button>Start</button>
+    <button onClick={props.onClick}>Start</button>
   )
+}
+Start_button.propTypes = {
+    onClick: PropTypes.func,
 }
 export default Start_button

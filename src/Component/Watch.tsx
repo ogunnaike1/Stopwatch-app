@@ -1,28 +1,24 @@
 import { useState } from "react"
-
-const Watch = () => {
-    const [SpanSecondsValue, SetSpanSecondValue]= useState(3);
-    const [SpanMinuteValue, SetSpanMinuteValue]= useState(2);
-    const [SpanHourValue, SetSpanHourValue]= useState(1);
-    const [SpanMilliSecondValue, SetMilliSecondValue]= useState(1);
-    const changeNumber = (number: { toString: () => string; }) => number.toString().padStart(2, '0');
-    const SecondsValue = changeNumber(SpanSecondsValue);
-    const MinutesValue = changeNumber(SpanMinuteValue);
-    const HoursValue = changeNumber(SpanHourValue);
-    const MilliSecondValue = changeNumber(SpanHourValue);
-    
-    
+import PropTypes from "prop-types";
+const Watch = (props:any) => {
   return (
     <div className='div-stopwatch'>
-        <span>{SecondsValue}</span>
+        <span>{props.hoursValue}</span>
         <span>:</span>
-        <span>{MinutesValue}</span>
+        <span>{props.minutesValue}</span>
         <span>:</span>
-        <span>{HoursValue}</span>
+        <span>{props.secondsValue}</span>
         <span>:</span>
-        <span>{MilliSecondValue}</span>
+        <span>{props.milliSecondValue}</span>
     </div>
   )
+}
+Watch.propTypes = {
+    secondsValue: PropTypes.string,
+    minutesValue: PropTypes.string,
+    hoursValue: PropTypes.string,
+    milliSecondValue: PropTypes.string
+
 }
 
 export default Watch
