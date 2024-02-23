@@ -1,10 +1,14 @@
 import React from 'react'
+import PropTypes from "prop-types";
 
-const Reset_button = () => {
+const Reset_button = (props:any) => {
   return (
-    <button className='button-reset'>
+    <button onClick={props.onClick}>
       Reset
     </button>
   )
+}
+Reset_button.propTypes = {
+    onClick: PropTypes.func,
 }
 export default Reset_button

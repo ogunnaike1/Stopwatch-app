@@ -18,7 +18,6 @@ Watch.propTypes = {
     minutesValue: PropTypes.string,
     hoursValue: PropTypes.string,
     milliSecondValue: PropTypes.string
-
 }
 
 export default Watch
