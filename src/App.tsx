@@ -10,6 +10,7 @@ const App = () => {
   const [spanMinuteValue, setSpanMinuteValue] = useState(0);
   const [SpanHourValue, setSpanHourValue] = useState(0);
   const [SpanMilliSecondValue, setMilliSecondValue] = useState(0);
+  const [isRunning,setIsRunning] = useState(true)
 
   const changeNumber = (number: { toString: () => string }) =>
     number.toString().padStart(2, "0");
@@ -23,11 +24,11 @@ const App = () => {
   let minute = 0;
   let hour = 0;
   const StartTimer = () => {
-    Time = setInterval(Timer, 10);
+      Time = setInterval(Timer, 10);
   };
 
   const StopTimer = () => {
-    clearInterval(Time);
+    setIsRunning(false);
   };
 
   const ResetTimer = () => {
@@ -43,13 +44,19 @@ const App = () => {
   };
 
   const Timer = () => {
-    millisecond++;
-    setMilliSecondValue(millisecond);
-    if (millisecond === 59) {
-      millisecond = 0;
-      second++;
-      setSpanSecondValue(second);
+    if(isRunning){
+      millisecond++;
+      setMilliSecondValue(millisecond);
+      if (millisecond === 59) {
+        millisecond = 0;
+        second++;
+        setSpanSecondValue(second);
+      }
+    }else{
+      millisecond = 0
+      setMilliSecondValue(millisecond)
     }
+  
     if (second === 59) {
       second = 0;
       minute++;
