@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import Watch from "./Component/Watch";
 import Start_button from "./Component/Start_button";
@@ -8,31 +8,29 @@ import Reset_button from "./Component/Reset_button";
 const App = () => {
   const [spanSecondsValue, setSpanSecondValue] = useState(0);
   const [spanMinuteValue, setSpanMinuteValue] = useState(0);
-  const [SpanHourValue, setSpanHourValue] = useState(0);
+  const [spanHourValue, setSpanHourValue] = useState(0);
   const [SpanMilliSecondValue, setMilliSecondValue] = useState(0);
-  const [isRunning,setIsRunning] = useState(true)
+  const [isRunning,setIsRunning] = useState(false)
 
-  const changeNumber = (number: { toString: () => string }) =>
-    number.toString().padStart(2, "0");
-  let secondsValue = changeNumber(spanSecondsValue);
-  const minutesValue = changeNumber(spanMinuteValue);
-  const hoursValue = changeNumber(SpanHourValue);
-  const milliSecondValue = changeNumber(SpanMilliSecondValue);
-  let Time: number | undefined;
+  useEffect(() =>{
+    let Time;
+    isRunning && (Time = setInterval(valid, 10));
+    return() => {
+      clearInterval(Time!)
+    }
+  },[isRunning])
+
   let millisecond = 0;
   let second = 0;
   let minute = 0;
   let hour = 0;
-  const StartTimer = () => {
-      Time = setInterval(Timer, 10);
-  };
 
-  const StopTimer = () => {
+  const stopTimer= () =>{
+    setIsRunning(false)
+  }
+
+  const resetTimer = () => {
     setIsRunning(false);
-  };
-
-  const ResetTimer = () => {
-    clearInterval(Time);
     millisecond = 0;
     second = 0;
     minute = 0;
@@ -43,8 +41,15 @@ const App = () => {
     setMilliSecondValue(0);
   };
 
+  const valid = () => {
+    millisecond++;
+    setMilliSecondValue(millisecond);
+    millisecond === 59 ?  millisecond = 0 && second++ && setSpanSecondValue(second): '';
+    second === 59 ?  second = 0 && minute++ && setSpanMinuteValue(minute) : ''
+
+    }
+
   const Timer = () => {
-    if(isRunning){
       millisecond++;
       setMilliSecondValue(millisecond);
       if (millisecond === 59) {
@@ -52,10 +57,6 @@ const App = () => {
         second++;
         setSpanSecondValue(second);
       }
-    }else{
-      millisecond = 0
-      setMilliSecondValue(millisecond)
-    }
   
     if (second === 59) {
       second = 0;
@@ -72,16 +73,17 @@ const App = () => {
   return (
     <div className="div-main">
       <div className="div-wrapper">
-        <Watch
-          secondsValue={secondsValue}
-          minutesValue={minutesValue}
-          hoursValue={hoursValue}
-          milliSecondValue={milliSecondValue}
+      <Watch
+          secondsValue={String(spanSecondsValue).padStart(2, '0')}
+          minutesValue={String(spanMinuteValue).padStart(2, '0')}
+          hoursValue={String(spanHourValue).padStart(2, '0')}
+          milliSecondValue={String(SpanMilliSecondValue).padStart(2, '0')}
         />
+
         <div className="div-button">
-          <Start_button onClick={StartTimer} />
-          <Stop_button onClick={StopTimer} />
-          <Reset_button onClick={ResetTimer} />
+          <Start_button onClick={() => (setIsRunning(true))} />
+          <Stop_button onClick={stopTimer} />
+          <Reset_button onClick={resetTimer} />
         </div>
       </div>
     </div>
