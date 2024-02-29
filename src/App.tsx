@@ -12,18 +12,15 @@ const App = () => {
   const [SpanMilliSecondValue, setMilliSecondValue] = useState(0);
   const [isRunning,setIsRunning] = useState(false)
 
+  let [millisecond, second, minute, hour] = [0, 0, 0, 0];
+
   useEffect(() =>{
     let Time;
-    isRunning && (Time = setInterval(valid, 10));
+    isRunning && (Time = setInterval(Timer, 10));
     return() => {
       clearInterval(Time!)
     }
   },[isRunning])
-
-  let millisecond = 0;
-  let second = 0;
-  let minute = 0;
-  let hour = 0;
 
   const stopTimer= () =>{
     setIsRunning(false)
@@ -41,34 +38,37 @@ const App = () => {
     setMilliSecondValue(0);
   };
 
-  const valid = () => {
+  const startSecondTimer = () =>{
+    millisecond = 0
+    setSpanSecondValue(prevSecond => {
+      second = prevSecond + 1;
+      return second;
+    });  
+  };
+  
+  const startMinuteTimer = () =>{
+    second = 0
+    setSpanMinuteValue( prevMinute => {
+      minute = prevMinute + 1;
+      return minute;
+    }) 
+  };
+
+  const startHourMinute = () =>{
+    minute = 0
+    setSpanHourValue( prevHour => {
+      hour = prevHour  + 1;
+      return hour;
+    }) 
+  };
+  
+  const Timer = () => {
     millisecond++;
     setMilliSecondValue(millisecond);
-    millisecond === 59 ?  millisecond = 0 && second++ && setSpanSecondValue(second): '';
-    second === 59 ?  second = 0 && minute++ && setSpanMinuteValue(minute) : ''
-
+    millisecond === 59 &&   (startSecondTimer());
+    second === 59 &&   (startMinuteTimer());
+    minute === 59 && (startHourMinute())
     }
-
-  const Timer = () => {
-      millisecond++;
-      setMilliSecondValue(millisecond);
-      if (millisecond === 59) {
-        millisecond = 0;
-        second++;
-        setSpanSecondValue(second);
-      }
-  
-    if (second === 59) {
-      second = 0;
-      minute++;
-      setSpanMinuteValue(minute);
-    }
-    if (minute === 59) {
-      hour++;
-      minute = 0;
-      setSpanHourValue(hour);
-    }
-  };
 
   return (
     <div className="div-main">
@@ -79,7 +79,6 @@ const App = () => {
           hoursValue={String(spanHourValue).padStart(2, '0')}
           milliSecondValue={String(SpanMilliSecondValue).padStart(2, '0')}
         />
-
         <div className="div-button">
           <Start_button onClick={() => (setIsRunning(true))} />
           <Stop_button onClick={stopTimer} />
