@@ -1,6 +1,4 @@
-import React from 'react'
 import PropTypes from "prop-types";
-
 
 const Start_button = (props: any) => {
   return (

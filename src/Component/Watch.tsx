@@ -1,5 +1,5 @@
-import { useState } from "react"
 import PropTypes from "prop-types";
+
 const Watch = (props:any) => {
   return (
     <div className='div-stopwatch'>
